@@ -1,0 +1,17 @@
+# Large or machine-specific -- not part of the workflow's source code
+CloudComPy312/
+Outputs_*/
+Parameters_*/
+Preprocessed/
+
+# Keep the empty Inputs folder, but none of the survey data put into it.
+# The contents are ignored rather than the folder itself: git never looks
+# inside an ignored directory, so "Inputs/" would make the exception below
+# unreachable.
+Inputs/*
+!Inputs/.gitkeep
+
+# Python / Jupyter clutter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

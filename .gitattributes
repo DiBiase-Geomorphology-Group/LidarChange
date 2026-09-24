@@ -1,0 +1,27 @@
+# How git treats the contents of tracked files.
+#
+# Unlike core.autocrlf, which is a per-machine git config setting, this file
+# is tracked -- so Windows and macOS collaborators get identical behavior.
+
+# Store text files with LF in the repository, and check them out with the
+# platform's native endings, unless a rule below overrides it.
+* text=auto
+
+# cmd.exe can mis-handle labels and goto in a .bat file with LF-only endings
+# (launch_notebook.bat relies on goto for conda discovery), so force CRLF
+# on checkout everywhere.
+*.bat       text eol=crlf
+
+# Shell scripts must keep LF even when checked out on Windows: CRLF makes
+# macOS fail them with a "bad interpreter" error.
+*.sh        text eol=lf
+*.zsh       text eol=lf
+*.command   text eol=lf
+
+# Notebooks are JSON. A line-by-line merge produces a file Jupyter cannot
+# open, so don't attempt one -- on conflict, pick one whole version and
+# redo the other side's edits.
+*.ipynb     -merge
+
+# Never line-end-convert or diff these as text.
+*.pdf       binary

@@ -1,0 +1,50 @@
+# Conda environment for LidarChangeNotebook.ipynb, pinned to the exact versions
+# the workflow was tested with (2026-09) alongside the CloudComPy binary
+# release of May 26, 2026 (CloudComPy312, CloudCompare 2.14alpha).
+#
+# Pins are on the packages asked for directly; conda resolves their
+# dependencies around them. A few of the geospatial ones are left loose so
+# that this same file also solves on macOS arm64 -- see that section below.
+#
+# The pins record what the workflow was tested against, not what it strictly
+# requires. If this ever fails to solve, relax them -- every run writes the
+# versions it actually used to Parameters_<timestamp>/run_config.json. On
+# macOS, setup_mac.zsh relaxes every pin but Python and retries by itself.
+name: lidarchange312
+channels:
+ - conda-forge
+ - nodefaults
+dependencies:
+ # Required by CloudComPy itself
+ - python=3.12.14
+ - cmake=4.4.3
+ - matplotlib=3.11.1
+ - numpy=2.5.3
+ - psutil=7.2.2
+ - quaternion=2024.0.13
+ - requests=2.34.2
+ - scipy=1.18.1
+ # Jupyter
+ - ipykernel=6.31.0
+ - jupyter=1.1.1
+ - jupyterlab=4.6.3
+ - notebook=7.6.2
+ # Point cloud / geospatial stack.
+ # gdal is pinned only to its minor version, and libgdal-core, proj, geos and
+ # pyogrio not at all: conda-forge does not build every tested Windows version
+ # for macOS arm64, and pinning them there stops the environment solving. All
+ # four come in under gdal and pdal regardless, which are pinned.
+ # fiona is deliberately absent: nothing in the notebook or in
+ # LidarChangeScripts imports it (geopandas reads files through pyogrio), and
+ # on conda-forge it currently cannot be installed alongside PDAL 2.10 on macOS.
+ - pdal=2.10.2
+ - python-pdal=3.5.5
+ - gdal=3.13.*
+ - libgdal-core
+ - proj
+ - geos
+ - geopandas=1.1.4
+ - shapely=2.1.2
+ - pyogrio
+ # JPEG export of the visualization figures
+ - pillow=12.3.0
